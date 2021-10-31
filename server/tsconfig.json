@@ -6,7 +6,9 @@
     "esModuleInterop": true,
     "typeRoots": [
       "./node_modules/@types"
-    ]
+    ],
+    "resolveJsonModule": true,
+    "moduleResolution": "node"
   },
   "compileOnSave": true,
   "include": [
