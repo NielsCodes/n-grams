@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import {LanguageCode, LanguageSubModel} from './models';
-import {cleanText} from './utils'
+import {cleanText} from './utils';
 
 /**
  * Create tri-, bi- and unigrams for the given language, using all training texts in the 'dataset' folder
@@ -84,3 +84,5 @@ createLanguageModel('DE');
 createLanguageModel('FR');
 createLanguageModel('EN');
 createLanguageModel('IT');
+createLanguageModel('PT');
+createLanguageModel('SP');

@@ -1,4 +1,4 @@
-export type LanguageCode = 'NL' | 'EN' | 'FR' | 'DE' | 'IT' | 'SP';
+export type LanguageCode = 'EN' | 'FR' | 'DE' | 'IT' | 'PT' | 'SP';
 
 export interface LanguageModel {
   trigrams: LanguageSubModel;
@@ -17,4 +17,6 @@ export interface LanguageChances {
   FR: number;
   EN: number;
   IT: number;
+  PT: number;
+  SP: number;
 }
