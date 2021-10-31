@@ -2,15 +2,18 @@
 Language recognition based on nth-order Markov models, also called n-grams.
 
 # Languages
-- Dutch
 - English
 - French
 - German
 - Italian
+- Portuguese
 - Spanish
 
 # Training corpus
-Book / Text | English | French | German | Italian | Portugese | Spanish
+The corpus used to train the language models consists of 5 books for each language. These books were sourced from Project Gutenberg and consist of the top five unique books per language. The only exception to this is Alice in Wonderland, which was available in 4 out of the 6 languages.
+
+
+Book / Text | English | French | German | Italian | Portuguese | Spanish
  --- | --- | --- | --- | --- | --- | ---
 Alice in Wonderland | X | X | X | X |  |
 Pride and Prejudice | X

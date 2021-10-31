@@ -13,7 +13,13 @@ import languageModelIT from '../src/models/IT.json';
 import languageModelPT from '../src/models/PT.json';
 import languageModelSP from '../src/models/SP.json';
 
-const classifyText = (text: string, n: 3 | 2): LanguageCode => {
+/**
+ * Parses an input text and returns the predicted language based on n-gram comparison
+ * @param text the input text to run the classification on
+ * @param n which order of Markov model to use (trigrams or bigrams)
+ * @returns a two-letter language code prediction
+ */
+export const classifyText = (text: string, n: 3 | 2): LanguageCode | null => {
   text = cleanText(text);
 
   // Products of trigrams (if n === 3)
@@ -69,9 +75,7 @@ const classifyText = (text: string, n: 3 | 2): LanguageCode => {
   }
 
   console.log(`Prediction: ${likeliestLanguage}`);
-  console.log(text);
-
-  return 'DE';
+  return likeliestLanguage as LanguageCode;
 };
 
 const updateChances = (
@@ -117,7 +121,13 @@ const updateChances = (
   return chances;
 };
 
-const calculateChance = (token: string, model: LanguageSubModel) => {
+/**
+ * Calculates the likeliness of a given token string being part of the same language as given language model
+ * @param token the current token string (2- or 3-character string)
+ * @param model the language model to compare the token to
+ * @returns the chance that the token is in the same language as the model
+ */
+const calculateChance = (token: string, model: LanguageSubModel): number => {
   if (!(token in model)) return 0.000001;
   const total = model.TOTAL;
   const occurences = model[token];
@@ -125,9 +135,9 @@ const calculateChance = (token: string, model: LanguageSubModel) => {
   return chance;
 };
 
-console.time();
+// console.time();
 // const testText =
-  // 'In den Jahren 1893 und 1894 rüstete die "Maatschappij totbevordering van het natuurkundig onderzoek der Nederlandsche Koloniën (Gesellschaft zur Beförderung der naturwissenschaftlichen Forschung in den niederländischen Kolonieen) ihre erste grosse wissenschaftliche Expedition nach Mittel-Borneo aus; wesentlich unterstützt wurdesie dabei durch den damaligen Residenten _S.W. Tromp_ [2] der Wester-Afdeeling von Borneo, der sehr wohl begriff, dass eine Erweiterung der Kenntnis von Land und Volk auch in politischer Hinsicht von grosser Bedeutung sein musste. Den Teilnehmern an der Expedition war zur Aufgabe gestellt worden, von der Westküste durch die bisher ganz unbekannten Gebiete des oberen Kapuas und oberen Mahakam bis zur Ostküste vorzudringen und während der Reise, so weit als möglich, naturwissenschaftliches Material zu sammeln und die Bevölkerung zu studieren. In Kutei erhoben sich aber bald warnende Stimmen, welche auf die grossen Gefahren einer derartigen Unternehmung aufmerksam machten; daher nahm man von dem anfänglichen Plan Abstand und beschränkte sich auf die Erforschung des Flussgebietes des oberen Kapuas, in welchem vom November 1893 bis zum Oktober 1894 reiche Sammlungen auf botanischem, zoologischem, geologischem und ethnologischem Gebiete angelegt wurden. Dank der Unterstützung der Regierung durch Schutz- und Transportmittel konnten die Forscher, jeder in seinem Fache, gesondert tätig sein; während der Zoologe Dr. _J.  Büttikofer_ und der Botaniker Dr. _H. Hallier_ sich im Urwalde niederliessen, durchzog der Geologe Prof. _G.A.F. Molengraaff_ ausgedehnte Landstrecken,  um deren Formation kennen zu lernen und beendete seine Reise durch  einen gelungenen Zug von Bunut südlich nach Bandjarmasin. Indessen  jeder auf diese Weise die nötige Forschungsfreiheit genoss, lag mir,  als dem Expeditionsarzte, die Verwaltung des Ganzen ob. Da meine  ärztliche Hilfe von den Teilnehmern der Expedition selten beansprucht  wurde, konnte ich in den Dörfern der Eingeborenen wohnen bleiben und  von dort aus für die Zufuhr neuer Vorräte und die Anwerbung von Kuli  Sorge tragen.';
-const testText = 'Luciano tem oito anos e possui uma família que admira muito. Ele gosta de desenhar seus familiares quando está de férias. Sua mãe chama-se Olívia e tem cabelos castanhos e longos. Ela gosta de assistir novelas e cultivar um jardim de rosas brancas.';
-classifyText(testText, 3);
-console.timeEnd();
+// 'In den Jahren 1893 und 1894 rüstete die "Maatschappij totbevordering van het natuurkundig onderzoek der Nederlandsche Koloniën (Gesellschaft zur Beförderung der naturwissenschaftlichen Forschung in den niederländischen Kolonieen) ihre erste grosse wissenschaftliche Expedition nach Mittel-Borneo aus; wesentlich unterstützt wurdesie dabei durch den damaligen Residenten _S.W. Tromp_ [2] der Wester-Afdeeling von Borneo, der sehr wohl begriff, dass eine Erweiterung der Kenntnis von Land und Volk auch in politischer Hinsicht von grosser Bedeutung sein musste. Den Teilnehmern an der Expedition war zur Aufgabe gestellt worden, von der Westküste durch die bisher ganz unbekannten Gebiete des oberen Kapuas und oberen Mahakam bis zur Ostküste vorzudringen und während der Reise, so weit als möglich, naturwissenschaftliches Material zu sammeln und die Bevölkerung zu studieren. In Kutei erhoben sich aber bald warnende Stimmen, welche auf die grossen Gefahren einer derartigen Unternehmung aufmerksam machten; daher nahm man von dem anfänglichen Plan Abstand und beschränkte sich auf die Erforschung des Flussgebietes des oberen Kapuas, in welchem vom November 1893 bis zum Oktober 1894 reiche Sammlungen auf botanischem, zoologischem, geologischem und ethnologischem Gebiete angelegt wurden. Dank der Unterstützung der Regierung durch Schutz- und Transportmittel konnten die Forscher, jeder in seinem Fache, gesondert tätig sein; während der Zoologe Dr. _J.  Büttikofer_ und der Botaniker Dr. _H. Hallier_ sich im Urwalde niederliessen, durchzog der Geologe Prof. _G.A.F. Molengraaff_ ausgedehnte Landstrecken,  um deren Formation kennen zu lernen und beendete seine Reise durch  einen gelungenen Zug von Bunut südlich nach Bandjarmasin. Indessen  jeder auf diese Weise die nötige Forschungsfreiheit genoss, lag mir,  als dem Expeditionsarzte, die Verwaltung des Ganzen ob. Da meine  ärztliche Hilfe von den Teilnehmern der Expedition selten beansprucht  wurde, konnte ich in den Dörfern der Eingeborenen wohnen bleiben und  von dort aus für die Zufuhr neuer Vorräte und die Anwerbung von Kuli  Sorge tragen.';
+// const testText = 'Luciano tem oito anos e possui uma família que admira muito. Ele gosta de desenhar seus familiares quando está de férias. Sua mãe chama-se Olívia e tem cabelos castanhos e longos. Ela gosta de assistir novelas e cultivar um jardim de rosas brancas.';
+// classifyText(testText, 3);
+// console.timeEnd();
