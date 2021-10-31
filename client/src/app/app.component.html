@@ -3,6 +3,7 @@
   <main id="content-container">
 
     <h1>Enter text for language recognition</h1>
+    <h6>Use either English, French, German, Italian, Portuguese or Spanish</h6>
 
     <div id="input-container">
       <textarea id="classification-input" cols="40" rows="10" [(ngModel)]="inputText" (ngModelChange)="onChange()"></textarea>
@@ -20,7 +21,7 @@
 
 
     <div id="output-container">
-      <span id="output-string" *ngIf="predictedLanguage !== null && inputText.length > 3">Prediction: {{ predictedLanguage }}</span>
+      <span id="output-string" *ngIf="predictedLanguage !== null && inputText.length > 0">Prediction: {{ predictedLanguage }}</span>
     </div>
   </main>
 
