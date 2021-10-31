@@ -78,6 +78,16 @@ export const classifyText = (text: string, n: 3 | 2): LanguageCode | null => {
   return likeliestLanguage as LanguageCode;
 };
 
+/**
+ * Update an existing chances object with a new token
+ *
+ * - Token is used to generate chances
+ * - Passed object is updated to reflect new chances
+ *
+ * @param token the current token string (2- or 3-character string)
+ * @param chances the current chances object
+ * @returns an updates chances object
+ */
 const updateChances = (
   token: string,
   chances: LanguageChances
