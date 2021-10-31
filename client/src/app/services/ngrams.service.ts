@@ -29,7 +29,7 @@ export class NgramsService {
    * @param text raw input text
    * @returns cleaned text
    */
-  function cleanText(text: string): string {
+  private cleanText(text: string): string {
     return (
       text
         // Remove digits
@@ -53,7 +53,7 @@ export class NgramsService {
    * @param model the language model to compare the token to
    * @returns the chance that the token is in the same language as the model
    */
-  function calculateChance(token: string, model: LanguageSubModel): number {
+  private calculateChance(token: string, model: LanguageSubModel): number {
     if (!(token in model)) return 0.000001;
     const total = model.TOTAL;
     const occurences = model[token];
@@ -71,7 +71,7 @@ export class NgramsService {
    * @param chances the current chances object
    * @returns an updates chances object
    */
-  function updateChances = (token: string, chances: LanguageChances): LanguageChances {
+  private updateChances(token: string, chances: LanguageChances): LanguageChances {
     let type = 'trigrams';
     switch (token.length) {
       case 2:
@@ -83,27 +83,27 @@ export class NgramsService {
     }
 
     // Find chance per language
-    chances.DE *= calculateChance(
+    chances.DE *= this.calculateChance(
       token,
       (languageModelDE as LanguageModel)[type]
     );
-    chances.FR *= calculateChance(
+    chances.FR *= this.calculateChance(
       token,
       (languageModelFR as LanguageModel)[type]
     );
-    chances.EN *= calculateChance(
+    chances.EN *= this.calculateChance(
       token,
       (languageModelEN as LanguageModel)[type]
     );
-    chances.IT *= calculateChance(
+    chances.IT *= this.calculateChance(
       token,
       (languageModelIT as LanguageModel)[type]
     );
-    chances.PT *= calculateChance(
+    chances.PT *= this.calculateChance(
       token,
       (languageModelPT as LanguageModel)[type]
     );
-    chances.SP *= calculateChance(
+    chances.SP *= this.calculateChance(
       token,
       (languageModelSP as LanguageModel)[type]
     );
@@ -117,8 +117,8 @@ export class NgramsService {
    * @param n which order of Markov model to use (trigrams or bigrams)
    * @returns a two-letter language code prediction
    */
-  function classifyText = (text: string, n: 3 | 2): LanguageCode | null {
-    text = cleanText(text);
+  classifyText(text: string, n: 3 | 2): LanguageCode | null {
+    text = this.cleanText(text);
 
     // Products of trigrams (if n === 3)
     // Products of bigrams (if n === 2)
@@ -144,13 +144,11 @@ export class NgramsService {
 
     for (let i = 0; i < text.length - (n - 1); i++) {
       const nToken = text.substr(i, n);
-      nChances = updateChances(nToken, nChances);
-      console.log({nChances});
+      nChances = this.updateChances(nToken, nChances);
       let nMinusToken;
       if (i !== 0) {
         nMinusToken = text.substr(i, n - 1);
-        nMinusChances = updateChances(nMinusToken, nMinusChances);
-        console.log({nMinusChances});
+        nMinusChances = this.updateChances(nMinusToken, nMinusChances);
       }
     }
 
@@ -172,7 +170,6 @@ export class NgramsService {
       }
     }
 
-    console.log(`Prediction: ${likeliestLanguage}`);
     return likeliestLanguage as LanguageCode;
   };
 

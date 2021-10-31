@@ -5,14 +5,14 @@
     <h1>Enter text for language recognition</h1>
 
     <div id="input-container">
-      <textarea id="classification-input" cols="40" rows="10"></textarea>
+      <textarea id="classification-input" cols="40" rows="10" [(ngModel)]="inputText" (ngModelChange)="onChange()"></textarea>
       <div id="model-selection-container">
         <div class="model-selector">
-          <input type="radio" name="model" id="bigrams" value="bigrams">
+          <input type="radio" name="model" id="bigrams" value="bigrams" [(ngModel)]="modelChoice">
           <label for="bigrams">Bigrams</label>
         </div>
         <div class="model-selector">
-          <input type="radio" name="model" id="trigrams" value="trigrams" checked>
+          <input type="radio" name="model" id="trigrams" value="trigrams" checked [(ngModel)]="modelChoice">
           <label for="trigrams">Trigrams</label>
         </div>
       </div>
@@ -20,7 +20,7 @@
 
 
     <div id="output-container">
-      Hello world
+      <span id="output-string" *ngIf="predictedLanguage !== null && inputText.length > 3">Prediction: {{ predictedLanguage }}</span>
     </div>
   </main>
 
